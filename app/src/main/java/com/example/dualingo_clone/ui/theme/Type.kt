@@ -32,3 +32,13 @@ val Typography = Typography(
     )
     */
 )
+
+val appTypography = Typography(
+    // Определите стили текста для различных уровней, например:
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    // Другие стили текста по вашему выбору
+)
