@@ -3,29 +3,46 @@ package com.example.dualingo_clone
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.dualingo_clone.onboard.ui.OnboardScreen
+import com.example.dualingo_clone.splash.SplashScreen
+import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.ui.theme.Dualingo_cloneTheme
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Dualingo_cloneTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = AppTheme.colors.primary
                 ) {
-                    Greeting("Android")
+                    SplashScreenContent(viewModel = viewModel)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SplashScreenContent(viewModel: MainViewModel){
+    val isLoad = viewModel.isLoading.collectAsState()
+    val showOnboarding = viewModel.showOnboarding.collectAsState()
+    if (isLoad.value){
+        SplashScreen()
+    } else if (showOnboarding.value) {
+        OnboardScreen()
+    } else {
+        Greeting(name = "Android")
     }
 }
 
