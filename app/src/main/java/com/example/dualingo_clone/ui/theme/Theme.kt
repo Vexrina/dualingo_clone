@@ -1,6 +1,7 @@
 package com.example.dualingo_clone.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -36,29 +37,39 @@ val darkAppColors = AppColors(
     )
 )
 
-val lightAppColors = lightColorScheme(
+val lightAppColors = AppColors(
+    materialColors = lightColorScheme(
     primary = SplashColor,
     secondary = White,
     background = SplashColor,
     primaryContainer = Graye,
     onPrimary = ButtonColor,
+    )
 )
+
+fun isDarkTheme():Boolean{
+    return when (AppCompatDelegate.getDefaultNightMode()) {
+        AppCompatDelegate.MODE_NIGHT_YES -> true
+        else -> false
+    }
+}
+
+val appColors = if (isDarkTheme()){
+    darkAppColors
+} else {
+    lightAppColors
+}
+val localAppColors = staticCompositionLocalOf { appColors }
 
 @Composable
 fun Dualingo_cloneTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable (isDarkTheme: Boolean) -> Unit
 ) {
-    val appColors = if (isDarkTheme){
-        darkAppColors
-    } else {
-        lightAppColors
-    }
-    val localAppColors = staticCompositionLocalOf { appColors }
 
     CompositionLocalProvider (localAppColors provides appColors) {
         MaterialTheme(
-            colorScheme = darkAppColors.materialColors,
+            colorScheme = appColors.materialColors,
             shapes = appShapes,
             typography = appTypography,
             content = {
@@ -67,4 +78,19 @@ fun Dualingo_cloneTheme(
         )
     }
 }
+
+object AppTheme {
+    val colors: AppColors
+        @Composable
+        get() = localAppColors.current
+
+    val shapes: Shapes
+        @Composable
+        get() = MaterialTheme.shapes
+
+    val typography: Typography
+        @Composable
+        get() = MaterialTheme.typography
+}
+
 
