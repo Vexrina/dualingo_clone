@@ -14,16 +14,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.dualingo_clone.ui.commonComponents.ButtonComponent
+import androidx.navigation.NavController
+import com.example.dualingo_clone.ui.components.BoldText
+import com.example.dualingo_clone.ui.components.ButtonComponent
+import com.example.dualingo_clone.ui.components.Header
+import com.example.dualingo_clone.ui.components.ImageComponent
+import com.example.dualingo_clone.ui.components.LabelWithLinkComponent
+import com.example.dualingo_clone.ui.components.TextComponent
+import com.example.dualingo_clone.ui.components.ThreeDotsComponent
 import com.example.dualingo_clone.ui.theme.AppTheme
 
 @Composable
-fun OnboardScreen() {
+fun OnboardScreen(navController: NavController) {
     val viewModel: OnboardingViewModel = viewModel()
     val onboardingItem by viewModel.onboardingItems.collectAsState()
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .fillMaxSize()
             .background(color = AppTheme.colors.secondary)
             .wrapContentHeight(align = Alignment.CenterVertically),
@@ -61,8 +67,10 @@ fun OnboardScreen() {
                 .width(327.dp)
                 .padding(top = 50.dp)
         ) {
-            if (onboardingItem.size>1){
+            if (onboardingItem.size > 1) {
                 viewModel.navigateToNextOnboardingItem()
+            } else {
+                navController.navigate("motherLanguage")
             }
         }
         LabelWithLinkComponent(
@@ -72,7 +80,7 @@ fun OnboardScreen() {
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 32.dp)
         ) {
-
+            navController.navigate("greetings")
         }
     }
 }

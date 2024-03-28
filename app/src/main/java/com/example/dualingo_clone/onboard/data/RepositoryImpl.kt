@@ -1,14 +1,15 @@
 package com.example.dualingo_clone.onboard.data
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.example.dualingo_clone.R
-import com.example.dualingo_clone.onboard.domain.OnboardingItem
+import com.example.dualingo_clone.cache.data.CacheProvider
+import com.example.dualingo_clone.cache.domain.Cache
+import com.example.dualingo_clone.dataclasses.OnboardingItem
 import com.example.dualingo_clone.onboard.domain.OnboardingRepository
 
 class RepositoryImpl(private val context: Application) : OnboardingRepository {
+    private val cache: Cache = CacheProvider.getCache()
     private fun isDarkTheme(): Boolean {
         return when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> true
@@ -16,12 +17,8 @@ class RepositoryImpl(private val context: Application) : OnboardingRepository {
         }
     }
 
-    private val sharedPreferences: SharedPreferences by lazy {
-        context.getSharedPreferences("onboarding_preferences", Context.MODE_PRIVATE)
-    }
-
     override suspend fun getOnboardingItems(): List<OnboardingItem> {
-        val onboardingComplete = sharedPreferences.getBoolean("onboarding_complete", false)
+        val onboardingComplete = cache.isOnboardingComplete()
 
         if (onboardingComplete) {
             return emptyList()
@@ -50,6 +47,6 @@ class RepositoryImpl(private val context: Application) : OnboardingRepository {
     }
 
     override suspend fun markOnboardingComplete() {
-        sharedPreferences.edit().putBoolean("onboarding_complete", true).apply()
+        cache.markOnboardingComplete()
     }
 }

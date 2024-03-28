@@ -3,8 +3,8 @@ package com.example.dualingo_clone.onboard.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dualingo_clone.MyApplication
+import com.example.dualingo_clone.dataclasses.OnboardingItem
 import com.example.dualingo_clone.onboard.data.RepositoryImpl
-import com.example.dualingo_clone.onboard.domain.OnboardingItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ class OnboardingViewModel : ViewModel() {
         loadOnboardingItems()
     }
 
-    fun loadOnboardingItems() {
+    private fun loadOnboardingItems() {
         viewModelScope.launch {
             val repo = RepositoryImpl(MyApplication.instance)
             val items = repo.getOnboardingItems()
