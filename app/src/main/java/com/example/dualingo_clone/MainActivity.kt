@@ -11,15 +11,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageScreen
+import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageViewModel
 import com.example.dualingo_clone.onboard.ui.OnboardScreen
 import com.example.dualingo_clone.splash.SplashScreen
 import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.ui.theme.Dualingo_cloneTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var motherViewModel: MotherLanguageViewModel
+
     private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             Dualingo_cloneTheme {
                 Surface(
@@ -34,13 +47,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SplashScreenContent(viewModel: MainViewModel){
+fun SplashScreenContent(viewModel: MainViewModel) {
+    val navController = rememberNavController()
     val isLoad = viewModel.isLoading.collectAsState()
     val showOnboarding = viewModel.showOnboarding.collectAsState()
-    if (isLoad.value){
+    if (isLoad.value) {
         SplashScreen()
     } else if (showOnboarding.value) {
-        OnboardScreen()
+        NavHost(navController = navController, startDestination = "onboard") {
+            composable("onboard") { OnboardScreen(navController) }
+            composable("motherLanguage") { MotherLanguageScreen(navController) }
+            composable("greetings") { Greeting(name = "Android") }
+        }
     } else {
         Greeting(name = "Android")
     }
