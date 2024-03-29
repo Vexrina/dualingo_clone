@@ -26,14 +26,17 @@ import com.example.dualingo_clone.ui.theme.AppTheme
 @Composable
 fun MotherLanguageScreen(navController: NavController) {
     val viewModel: MotherLanguageViewModel = hiltViewModel()
+
     val languages by viewModel.languages.collectAsState()
+    val selectedLanguage by viewModel.selectedLanguage.collectAsState()
+
     Scaffold(
         topBar = {
             Header(
                 text = "Language select",
                 modifier = Modifier
                     .width(375.dp)
-                    .padding(start=21.dp)
+                    .padding(start = 21.dp)
             )
         },
         bottomBar = {
@@ -46,7 +49,7 @@ fun MotherLanguageScreen(navController: NavController) {
                     .width(327.dp)
                     .height(67.dp)
             ) {
-
+                navController.navigate("main")
             }
         },
         content = { padding ->
@@ -65,11 +68,12 @@ fun MotherLanguageScreen(navController: NavController) {
                 languages.forEach { language ->
                     ButtonComponent(
                         text = language.name,
+                        textColor = Color.Black,
                         buttonColors =
-                        if (viewModel.isActiveLanguage(language.name))
-                            AppTheme.colors.splash
+                        if (selectedLanguage?.name == language.name)
+                            AppTheme.colors.activeLanguage
                         else
-                            AppTheme.colors.userListItem,
+                            AppTheme.colors.inactiveLanguage,
                         textAlign = TextAlign.Start,
                         radius = 20,
                         modifier = Modifier

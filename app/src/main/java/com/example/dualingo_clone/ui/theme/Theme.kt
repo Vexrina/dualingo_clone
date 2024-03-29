@@ -25,6 +25,8 @@ data class AppColors(
     val boldText = materialColors.onSecondary
     val text = materialColors.onTertiary
     val activeDot = materialColors.onError
+    val activeLanguage = materialColors.onError
+    val inactiveLanguage = materialColors.onErrorContainer
 }
 
 val darkAppColors = AppColors(
@@ -37,6 +39,7 @@ val darkAppColors = AppColors(
         onSecondary = White,
         onTertiary = BlackyGray,
         onError = Orange,
+        onErrorContainer = Whity,
     )
 )
 
@@ -50,6 +53,7 @@ val lightAppColors = AppColors(
         onSecondary = Black,
         onTertiary = Graye,
         onError = Orange,
+        onErrorContainer = Whity,
     )
 )
 

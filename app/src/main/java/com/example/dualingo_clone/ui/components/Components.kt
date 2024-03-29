@@ -135,6 +135,7 @@ fun ButtonComponent(
     modifier: Modifier,
     buttonColors: Color = AppTheme.colors.button,
     textAlign: TextAlign = TextAlign.Center,
+    textColor: Color = Color.White,
     radius: Int = 12,
     onClick: () -> Unit
 ) {
@@ -148,7 +149,7 @@ fun ButtonComponent(
             text = text,
             style= TextStyle(
                 fontFamily = fredokaFamily,
-                color = Color.White,
+                color = textColor,
                 textAlign = textAlign,
                 fontSize = 20.sp,
             )

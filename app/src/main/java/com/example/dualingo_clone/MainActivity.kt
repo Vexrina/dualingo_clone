@@ -11,9 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.dualingo_clone.main.ui.MainScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageViewModel
 import com.example.dualingo_clone.onboard.ui.OnboardScreen
@@ -47,6 +53,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun СreateNavHost(navController: NavHostController, startDestination: String) {
+    NavHost(navController = navController, startDestination = startDestination) {
+        composable(route = "onboard") { OnboardScreen(navController) }
+        composable(route = "motherLanguage") { MotherLanguageScreen(navController) }
+        composable(route = "main") { MainScreen(navController) }
+        composable(route = "greetings") { Greeting(name = "Android") }
+    }
+}
+
+@Composable
 fun SplashScreenContent(viewModel: MainViewModel) {
     val navController = rememberNavController()
     val isLoad = viewModel.isLoading.collectAsState()
@@ -54,13 +70,15 @@ fun SplashScreenContent(viewModel: MainViewModel) {
     if (isLoad.value) {
         SplashScreen()
     } else if (showOnboarding.value) {
-        NavHost(navController = navController, startDestination = "onboard") {
-            composable("onboard") { OnboardScreen(navController) }
-            composable("motherLanguage") { MotherLanguageScreen(navController) }
-            composable("greetings") { Greeting(name = "Android") }
-        }
+        СreateNavHost(
+            navController = navController,
+            startDestination = "onboard"
+        )
     } else {
-        Greeting(name = "Android")
+        СreateNavHost(
+            navController = navController,
+            startDestination = "ANOTHERSCREEN"
+        )
     }
 }
 

@@ -39,6 +39,6 @@ class MotherLanguageViewModel @Inject constructor(private var db: DatabaseImpl) 
     }
 
     fun isActiveLanguage(language: String): Boolean{
-        return _selectedLanguage.value?.name.equals(language)
+        return _selectedLanguage.value?.name==language
     }
 }
