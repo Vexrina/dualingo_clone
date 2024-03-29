@@ -27,6 +27,8 @@ data class AppColors(
     val activeDot = materialColors.onError
     val activeLanguage = materialColors.onError
     val inactiveLanguage = materialColors.onErrorContainer
+    val field = materialColors.onSecondaryContainer
+    val forgotPassword = materialColors.outline
 }
 
 val darkAppColors = AppColors(
@@ -40,6 +42,8 @@ val darkAppColors = AppColors(
         onTertiary = BlackyGray,
         onError = Orange,
         onErrorContainer = Whity,
+        onSecondaryContainer = FieldGray,
+        outline = Pink,
     )
 )
 
@@ -54,6 +58,8 @@ val lightAppColors = AppColors(
         onTertiary = Graye,
         onError = Orange,
         onErrorContainer = Whity,
+        onSecondaryContainer = FieldGray,
+        outline = Pink,
     )
 )
 

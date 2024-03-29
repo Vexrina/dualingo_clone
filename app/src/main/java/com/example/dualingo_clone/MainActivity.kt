@@ -11,10 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHost
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +20,8 @@ import com.example.dualingo_clone.main.ui.MainScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageViewModel
 import com.example.dualingo_clone.onboard.ui.OnboardScreen
+import com.example.dualingo_clone.signIn.ui.LoginScreen
+import com.example.dualingo_clone.signIn.ui.LoginViewModel
 import com.example.dualingo_clone.splash.SplashScreen
 import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.ui.theme.Dualingo_cloneTheme
@@ -53,11 +52,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun СreateNavHost(navController: NavHostController, startDestination: String) {
+fun CreateNavHost(navController: NavHostController, startDestination: String) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = "onboard") { OnboardScreen(navController) }
         composable(route = "motherLanguage") { MotherLanguageScreen(navController) }
         composable(route = "main") { MainScreen(navController) }
+        composable(route = "signin") {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            LoginScreen(
+                loginViewModel = loginViewModel,
+                navController = navController,
+            )
+        }
         composable(route = "greetings") { Greeting(name = "Android") }
     }
 }
@@ -70,14 +76,14 @@ fun SplashScreenContent(viewModel: MainViewModel) {
     if (isLoad.value) {
         SplashScreen()
     } else if (showOnboarding.value) {
-        СreateNavHost(
+        CreateNavHost(
             navController = navController,
-            startDestination = "onboard"
+            startDestination = "signin"
         )
     } else {
-        СreateNavHost(
+        CreateNavHost(
             navController = navController,
-            startDestination = "ANOTHERSCREEN"
+            startDestination = "main"
         )
     }
 }

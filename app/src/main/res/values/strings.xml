@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">dualingo_clone</string>
+    <string name="sign_in_change">"Not you member? "</string>
+    <string name="sign_in_change_link">Singup</string>
+    <string name="sign_up_change">"Already you member? "</string>
+    <string name="sign_up_change_link">Login</string>
+    <string name="sign_in_title">Login</string>
+    <string name="sign_up_title">Signup</string>
+    <string name="forgot_title">Forgot</string>
 </resources>
