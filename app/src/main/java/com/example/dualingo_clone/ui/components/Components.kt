@@ -1,5 +1,8 @@
 package com.example.dualingo_clone.ui.components
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,9 +27,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,8 +45,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dualingo_clone.R
+import com.example.dualingo_clone.signIn.models.LoginEvent
 import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.ui.theme.fredokaFamily
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -209,8 +221,7 @@ fun Header(
     modifier: Modifier,
     backgroundColor: Color = AppTheme.colors.splash,
     backIcon: Boolean = false,
-    navController: NavController? = null,
-    destination: String? = null,
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -223,9 +234,7 @@ fun Header(
                 painter = painterResource(id = R.drawable.back_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .clickable {
-                        navController!!.navigate(route = destination!!)
-                    }
+                    .clickable(onClick=onClick)
                     .padding(start = 24.dp, bottom = 21.dp, top = 21.dp)
                     .height(27.dp)
                     .width(17.dp)
@@ -262,6 +271,7 @@ fun DTextField(
     textVisuals: TextVisuals = TextVisuals.Text,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    trailingIcon: (@Composable () -> Unit)? = {},
 ) {
     TextField(
         modifier = modifier,
@@ -295,6 +305,7 @@ fun DTextField(
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
         ),
+        trailingIcon = trailingIcon,
     )
 }
 
@@ -308,6 +319,7 @@ fun TextInput(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     textVisuals: TextVisuals = TextVisuals.Text,
+    trailingIcon: (@Composable () -> Unit)? = {},
 ) {
     Column(modifier = modifier)
     {
@@ -327,7 +339,8 @@ fun TextInput(
             value = textFieldValue,
             onValueChange = onTextFieldChange,
             placeholder = header,
-            textVisuals = textVisuals
+            textVisuals = textVisuals,
+            trailingIcon = trailingIcon,
         )
     }
 }

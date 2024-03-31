@@ -78,12 +78,12 @@ fun SplashScreenContent(viewModel: MainViewModel) {
     } else if (showOnboarding.value) {
         CreateNavHost(
             navController = navController,
-            startDestination = "signin"
+            startDestination = "onboard"
         )
     } else {
         CreateNavHost(
             navController = navController,
-            startDestination = "main"
+            startDestination = "signin"
         )
     }
 }

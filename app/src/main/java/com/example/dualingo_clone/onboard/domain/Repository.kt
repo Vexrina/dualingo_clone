@@ -9,4 +9,6 @@ interface OnboardingRepository {
 
     // Функция для сохранения информации о том, что onboarding завершен
     suspend fun markOnboardingComplete()
+    suspend fun markImage1()
+    suspend fun markImage2()
 }

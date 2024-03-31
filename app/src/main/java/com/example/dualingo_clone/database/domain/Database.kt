@@ -2,11 +2,12 @@ package com.example.dualingo_clone.database.domain
 
 import com.example.dualingo_clone.dataclasses.Language
 import com.example.dualingo_clone.dataclasses.User
+import java.lang.Exception
 
 
 interface Database {
-    suspend fun signUp(userData: User): Boolean
-    suspend fun signIn(email: String, password: String): Boolean
+    suspend fun signUp(userData: User): Pair<Boolean, String?>
+    suspend fun signIn(email: String, password: String): Pair<User, String?>
     suspend fun signOut(): Boolean
     suspend fun getUserData(): User?
 

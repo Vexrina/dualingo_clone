@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.dualingo_clone.R
 import com.example.dualingo_clone.signIn.models.LoginViewState
 import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ButtonComponent
@@ -46,7 +48,7 @@ fun SignUpStartView(
                 .width(263.dp)
         )
         TextInput(
-            header = "First Name",
+            header = stringResource(id = R.string.first_name_hint),
             textFieldValue = viewState.firstNameValue,
             enabled = !viewState.isProgress,
             onTextFieldChange = {
@@ -66,7 +68,7 @@ fun SignUpStartView(
             ),
         )
         TextInput(
-            header = "Last Name",
+            header = stringResource(id = R.string.last_name_hint),
             textFieldValue = viewState.lastNameValue,
             enabled = !viewState.isProgress,
             onTextFieldChange = {
@@ -86,7 +88,7 @@ fun SignUpStartView(
             ),
         )
         TextInput(
-            header = "Email Address",
+            header = stringResource(id = R.string.email_hint),
             textFieldValue = viewState.emailValue,
             enabled = !viewState.isProgress,
             onTextFieldChange = {

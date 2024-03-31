@@ -1,5 +1,6 @@
 package com.example.dualingo_clone.onboard.ui
 
+import android.health.connect.datatypes.units.Length
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dualingo_clone.MyApplication
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 class OnboardingViewModel : ViewModel() {
     private val _onboardingItems = MutableStateFlow<List<OnboardingItem>>(emptyList())
     val onboardingItems: StateFlow<List<OnboardingItem>> = _onboardingItems
+    private val repo = RepositoryImpl(MyApplication.instance)
 
     init {
         loadOnboardingItems()
@@ -19,7 +21,6 @@ class OnboardingViewModel : ViewModel() {
 
     private fun loadOnboardingItems() {
         viewModelScope.launch {
-            val repo = RepositoryImpl(MyApplication.instance)
             val items = repo.getOnboardingItems()
             _onboardingItems.value = items
         }
@@ -27,7 +28,20 @@ class OnboardingViewModel : ViewModel() {
 
     fun navigateToNextOnboardingItem() {
         val currentItems = _onboardingItems.value
+        mark(currentItems.size)
         val remainingItems = currentItems.drop(1)
         _onboardingItems.value = remainingItems
+    }
+
+    fun mark(length: Int) {
+        viewModelScope.launch {
+            when(length){
+                3 -> repo.markImage1()
+                2 -> repo.markImage2()
+                1 -> repo.markOnboardingComplete()
+                else -> {}
+            }
+
+        }
     }
 }

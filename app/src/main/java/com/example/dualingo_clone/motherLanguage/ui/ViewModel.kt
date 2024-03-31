@@ -22,13 +22,13 @@ class MotherLanguageViewModel @Inject constructor(private var db: DatabaseImpl) 
     private val _selectedLanguage = MutableStateFlow<Language?>(null)
     val selectedLanguage: StateFlow<Language?> = _selectedLanguage
 
+    private val repo = MotherLanguageRepoImpl(db)
     init {
         loadLanguages()
     }
 
     private fun loadLanguages() {
         viewModelScope.launch {
-            val repo = MotherLanguageRepoImpl(db)
             val loadedLanguages = repo.getAvailableLanguages()
             _languages.value = loadedLanguages
         }
@@ -38,7 +38,9 @@ class MotherLanguageViewModel @Inject constructor(private var db: DatabaseImpl) 
         _selectedLanguage.value = language
     }
 
-    fun isActiveLanguage(language: String): Boolean{
-        return _selectedLanguage.value?.name==language
+    fun setMotherLanguage(language: Language){
+        viewModelScope.launch {
+            repo.setUserMotherLanguage(language)
+        }
     }
 }

@@ -8,15 +8,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.dualingo_clone.R
 import com.example.dualingo_clone.signIn.models.LoginViewState
 import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ButtonComponent
@@ -32,6 +43,8 @@ fun SignUpEndView(
 ) {
     val focusManager = LocalFocusManager.current
 
+    var passwordVisible by rememberSaveable{mutableStateOf(false)}
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +58,7 @@ fun SignUpEndView(
                 .width(263.dp)
         )
         TextInput(
-            header = "Password",
+            header = stringResource(id = R.string.password),
             textFieldValue = viewState.passwordValue,
             enabled = !viewState.isProgress,
             onTextFieldChange = {
@@ -63,10 +76,20 @@ fun SignUpEndView(
                     focusManager.moveFocus(FocusDirection.Next)
                 }
             ),
-            textVisuals = TextVisuals.Password
+            textVisuals = if (passwordVisible) TextVisuals.Text else TextVisuals.Password,
+            trailingIcon = {
+                val image = if (passwordVisible) Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+
+                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, description)
+                }
+            }
         )
         TextInput(
-            header = "Confirm Password",
+            header = stringResource(id = R.string.confirm_password_hint),
             textFieldValue = viewState.confirmPasswordValue,
             enabled = !viewState.isProgress,
             onTextFieldChange = {
@@ -84,7 +107,17 @@ fun SignUpEndView(
                     focusManager.clearFocus()
                 }
             ),
-            textVisuals = TextVisuals.Password
+            textVisuals = if (passwordVisible) TextVisuals.Text else TextVisuals.Password,
+            trailingIcon = {
+                val image = if (passwordVisible) Icons.Filled.Visibility
+                            else Icons.Filled.VisibilityOff
+
+                val description = if (passwordVisible) "Hide password" else "Show password"
+
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, description)
+                }
+            }
         )
         ButtonComponent(
             text = "Signup",

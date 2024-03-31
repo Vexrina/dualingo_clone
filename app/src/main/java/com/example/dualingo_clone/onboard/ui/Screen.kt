@@ -70,6 +70,7 @@ fun OnboardScreen(navController: NavController) {
             if (onboardingItem.size > 1) {
                 viewModel.navigateToNextOnboardingItem()
             } else {
+                viewModel.mark(1)
                 navController.navigate("motherLanguage")
             }
         }

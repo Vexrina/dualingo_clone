@@ -8,8 +8,18 @@ import com.example.dualingo_clone.dataclasses.Language
 import com.example.dualingo_clone.dataclasses.User
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.exceptions.BadRequestRestException
+import io.github.jan.supabase.exceptions.HttpRequestException
+import io.github.jan.supabase.exceptions.NotFoundRestException
+import io.github.jan.supabase.exceptions.RestException
+import io.github.jan.supabase.exceptions.SupabaseEncodingException
+import io.github.jan.supabase.exceptions.UnauthorizedRestException
+import io.github.jan.supabase.exceptions.UnknownRestException
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
+import io.ktor.client.plugins.HttpRequestTimeoutException
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,27 +34,90 @@ class DatabaseImpl @Inject constructor() : Database {
     }
 
     private fun createClient(){
-        Log.d("INFO", "Client will be created")
         supabaseClient = createSupabaseClient(
             supabaseUrl = supabaseURL,
             supabaseKey = supabaseKEY,
         ) {install(Postgrest)}
-        Log.d("INFO", "all good, client created")
     }
 
 
-    override suspend fun signUp(userData: User): Boolean {
-        // Регистрация пользователя в базе данных SupaBase
-        // Возвращает true, если успешно, иначе false
-        // Реализация опущена для примера
-        return true
+    override suspend fun signUp(userData: User): Pair<Boolean, String?> {
+        try {
+            supabaseClient!!
+                .from("users")
+                .insert(userData)
+        } catch (e:BadRequestRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "BadRequest")
+        } catch (e: HttpRequestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "NetworkError")
+        } catch (e: NotFoundRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "Not found your resource")
+        } catch (e: RestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "Unknown error")
+        } catch (e: SupabaseEncodingException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "Bad data for encode")
+        } catch (e: UnauthorizedRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "Please authorize")
+        } catch (e: UnknownRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "Unknown error")
+        } catch (e: HttpRequestTimeoutException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(false, "Timeout exceeded")
+        }
+        return Pair(true, null)
     }
 
-    override suspend fun signIn(email: String, password: String): Boolean {
-        // Вход пользователя в систему с заданным email и паролем
-        // Возвращает true, если успешно, иначе false
-        // Реализация опущена для примера
-        return true
+    override suspend fun signIn(email: String, password: String): Pair<User, String?> {
+        val zeroUser = User("","","","","")
+        try {
+            val user: User = supabaseClient!!
+                .from("users")
+                .select(
+                    columns=Columns.list(
+                        "firstName",
+                        "lastName",
+                        "email",
+                        "password",
+                    )
+                ) {
+                    filter{
+                        eq("email", email)
+                        eq("password", password)
+                    }
+                }.decodeSingle<User>()
+            return Pair(user, null)
+        } catch (e:BadRequestRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "BadRequest")
+        } catch (e: HttpRequestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "NetworkError")
+        } catch (e: NotFoundRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "Not found your resource")
+        } catch (e: RestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "Unknown error")
+        } catch (e: SupabaseEncodingException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "Bad data for encode")
+        } catch (e: UnauthorizedRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "Please authorize")
+        } catch (e: UnknownRestException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "Unknown error")
+        } catch (e: HttpRequestTimeoutException){
+            Log.e("SUBC", "Error is ${e.message}")
+            return Pair(zeroUser, "Timeout exceeded")
+        }
     }
 
     override suspend fun signOut(): Boolean {

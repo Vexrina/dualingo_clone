@@ -1,6 +1,5 @@
 package com.example.dualingo_clone.main.ui
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
@@ -19,8 +18,8 @@ fun MainScreen(navController: NavController){
             text="Main screen",
             modifier = Modifier
                 .width(375.dp)
-                .padding(start = 21.dp)
-        )
+                .padding(start = 21.dp),
+        ){}
         },
         content = {padding->
             BoldText(text = "TODO :D", modifier = Modifier.padding(padding))
