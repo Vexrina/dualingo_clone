@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private var db: DatabaseImpl
+    db: DatabaseImpl
 ) : ViewModel(), EventHandler<LoginEvent> {
 
     private val repo = LoginRepositoryImpl(db)
@@ -199,11 +199,11 @@ class LoginViewModel @Inject constructor(
                 return@launch
             }
             val (user, err) = repo.signIn(email, password)
-            if (err!=null){
+            if (err != null) {
                 sendErrorEvent(err)
                 return@launch
             }
-            if (user.email==email && user.password==password){
+            if (user.email == email && user.password == password) {
                 repo.signInToCache(email, password)
                 sendSuccessEvent()
                 return@launch

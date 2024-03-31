@@ -37,7 +37,7 @@ fun MotherLanguageScreen(navController: NavController) {
                 modifier = Modifier
                     .width(375.dp)
                     .padding(start = 21.dp)
-            ){}
+            ) {}
         },
         bottomBar = {
             ButtonComponent(
@@ -49,6 +49,7 @@ fun MotherLanguageScreen(navController: NavController) {
                     .width(327.dp)
                     .height(67.dp)
             ) {
+                viewModel.setMotherLanguage()
                 navController.navigate("main")
             }
         },

@@ -18,8 +18,8 @@ class MotherLanguageRepoImpl(private val db: DatabaseImpl) : MotherLanguageRepo 
     override suspend fun getUserMotherLanguage(): Language? {
         val languages = db.getLanguages()
         val cachedLang = cache.getUserMotherLanguage()
-        for (lang in languages){
-            if (lang.name==cachedLang){
+        for (lang in languages) {
+            if (lang.name == cachedLang) {
                 return lang
             }
         }

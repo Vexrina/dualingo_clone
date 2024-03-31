@@ -1,8 +1,5 @@
 package com.example.dualingo_clone.ui.components
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,13 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,15 +36,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.dualingo_clone.R
-import com.example.dualingo_clone.signIn.models.LoginEvent
 import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.ui.theme.fredokaFamily
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -234,7 +221,7 @@ fun Header(
                 painter = painterResource(id = R.drawable.back_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .clickable(onClick=onClick)
+                    .clickable(onClick = onClick)
                     .padding(start = 24.dp, bottom = 21.dp, top = 21.dp)
                     .height(27.dp)
                     .width(17.dp)
@@ -296,14 +283,16 @@ fun DTextField(
             TextVisuals.Text -> VisualTransformation.None
             TextVisuals.Password -> PasswordVisualTransformation()
         },
-        colors = TextFieldDefaults.textFieldColors(
+        colors = TextFieldDefaults.colors(
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,
-            containerColor = AppTheme.colors.field,
-            errorIndicatorColor = Color.Red,
+            focusedContainerColor = AppTheme.colors.field,
+            unfocusedContainerColor = AppTheme.colors.field,
+            disabledContainerColor = AppTheme.colors.field,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
+            errorIndicatorColor = Color.Red,
         ),
         trailingIcon = trailingIcon,
     )

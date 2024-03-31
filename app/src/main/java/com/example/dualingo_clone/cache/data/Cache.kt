@@ -2,7 +2,6 @@ package com.example.dualingo_clone.cache.data
 
 import android.content.Context
 import com.example.dualingo_clone.cache.domain.Cache
-import java.util.UUID
 
 class SharedPreferencesCache(private val context: Context) : Cache {
     private val PREFS_NAME = "MyPrefsFile"
@@ -57,14 +56,14 @@ class SharedPreferencesCache(private val context: Context) : Cache {
         return prefs.getBoolean(KEY_IMAGE2_VIEWED, false)
     }
 
-    override fun userSignIn(email:String, password:String){
+    override fun userSignIn(email: String, password: String) {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putString(KEY_USER_EMAIL, email)
         editor.putString(KEY_USER_PWORD, password)
         editor.apply()
     }
 
-    override fun userSignOut(){
+    override fun userSignOut() {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.remove(KEY_USER_EMAIL)
         editor.remove(KEY_USER_PWORD)

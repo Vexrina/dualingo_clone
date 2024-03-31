@@ -1,10 +1,10 @@
 package com.example.dualingo_clone.signIn.models
 
 sealed class LoginEvent {
-    object None: LoginEvent()
+    object None : LoginEvent()
     object LoginActionInvoked : LoginEvent()
     object ActionClicked : LoginEvent()
-    object  SignUpBack : LoginEvent()
+    object SignUpBack : LoginEvent()
     object ErrorShown : LoginEvent()
     object ForgetClicked : LoginEvent()
     object LoginClicked : LoginEvent()

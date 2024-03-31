@@ -1,6 +1,5 @@
 package com.example.dualingo_clone.motherLanguage.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dualingo_clone.database.data.DatabaseImpl
@@ -23,6 +22,7 @@ class MotherLanguageViewModel @Inject constructor(private var db: DatabaseImpl) 
     val selectedLanguage: StateFlow<Language?> = _selectedLanguage
 
     private val repo = MotherLanguageRepoImpl(db)
+
     init {
         loadLanguages()
     }
@@ -38,9 +38,9 @@ class MotherLanguageViewModel @Inject constructor(private var db: DatabaseImpl) 
         _selectedLanguage.value = language
     }
 
-    fun setMotherLanguage(language: Language){
+    fun setMotherLanguage() {
         viewModelScope.launch {
-            repo.setUserMotherLanguage(language)
+            repo.setUserMotherLanguage(_selectedLanguage.value!!)
         }
     }
 }

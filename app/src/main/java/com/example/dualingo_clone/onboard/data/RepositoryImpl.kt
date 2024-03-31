@@ -50,7 +50,7 @@ class RepositoryImpl(private val context: Application) : OnboardingRepository {
             )
         }
         val image2 = cache.isImage2Viewed()
-        if (!image2){
+        if (!image2) {
             return listOf(
                 OnboardingItem(
                     imageResId = R.drawable.onboard_2,
@@ -81,12 +81,12 @@ class RepositoryImpl(private val context: Application) : OnboardingRepository {
         Log.d("MARK", "All marked")
     }
 
-    override suspend fun markImage2(){
+    override suspend fun markImage2() {
         cache.markImage2Viewed()
         Log.d("MARK", "Second marked")
     }
 
-    override suspend fun markImage1(){
+    override suspend fun markImage1() {
         cache.markImage1Viewed()
         Log.d("MARK", "First marked")
     }

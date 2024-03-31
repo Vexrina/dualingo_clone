@@ -2,7 +2,6 @@ package com.example.dualingo_clone.signIn.models
 
 import com.example.dualingo_clone.dataclasses.LoginEventMessageTuple
 import kotlinx.coroutines.channels.Channel
-import org.postgresql.util.ServerErrorMessage
 
 enum class LoginSubState {
     SignIn, SignUpStart, SignUpEnd, Forgot

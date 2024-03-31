@@ -51,7 +51,7 @@ fun SignInView(
 ) {
     val focusManager = LocalFocusManager.current
 
-    var passwordVisible by rememberSaveable{ mutableStateOf(false) }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -97,7 +97,7 @@ fun SignInView(
             textFieldValue = viewState.passwordValue,
             enabled = !viewState.isProgress,
             onTextFieldChange = {
-                if(!viewState.isProgress) onPasswordFieldChange.invoke(it)
+                if (!viewState.isProgress) onPasswordFieldChange.invoke(it)
             },
             modifier = Modifier
                 .padding(top = 24.dp)
@@ -128,8 +128,7 @@ fun SignInView(
             modifier = Modifier
                 .padding(top = 12.dp)
                 .width(327.dp)
-                .clickable { onForgetClick.invoke() }
-            ,
+                .clickable { onForgetClick.invoke() },
             style = TextStyle(
                 color = AppTheme.colors.forgotPassword,
                 fontFamily = fredokaFamily,

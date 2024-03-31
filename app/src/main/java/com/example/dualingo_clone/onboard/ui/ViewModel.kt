@@ -1,6 +1,5 @@
 package com.example.dualingo_clone.onboard.ui
 
-import android.health.connect.datatypes.units.Length
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dualingo_clone.MyApplication
@@ -35,7 +34,7 @@ class OnboardingViewModel : ViewModel() {
 
     fun mark(length: Int) {
         viewModelScope.launch {
-            when(length){
+            when (length) {
                 3 -> repo.markImage1()
                 2 -> repo.markImage2()
                 1 -> repo.markOnboardingComplete()

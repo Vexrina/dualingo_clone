@@ -22,17 +22,17 @@ import com.example.dualingo_clone.ui.theme.AppTheme
 
 
 @Composable
-fun SplashScreen(){
+fun SplashScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color=AppTheme.colors.primary)
+            .background(color = AppTheme.colors.primary)
             .wrapContentHeight(align = Alignment.CenterVertically),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_app_icon),
             contentDescription = null,
-            modifier= Modifier
+            modifier = Modifier
                 .size(200.dp)
                 .align(Alignment.CenterHorizontally)
         )

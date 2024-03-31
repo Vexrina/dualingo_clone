@@ -43,7 +43,7 @@ fun SignUpEndView(
 ) {
     val focusManager = LocalFocusManager.current
 
-    var passwordVisible by rememberSaveable{mutableStateOf(false)}
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -110,7 +110,7 @@ fun SignUpEndView(
             textVisuals = if (passwordVisible) TextVisuals.Text else TextVisuals.Password,
             trailingIcon = {
                 val image = if (passwordVisible) Icons.Filled.Visibility
-                            else Icons.Filled.VisibilityOff
+                else Icons.Filled.VisibilityOff
 
                 val description = if (passwordVisible) "Hide password" else "Show password"
 
@@ -126,7 +126,7 @@ fun SignUpEndView(
                 .height(56.dp)
                 .width(327.dp)
         ) {
-            if (!viewState.isProgress){
+            if (!viewState.isProgress) {
                 onRegisterClick.invoke()
             }
         }

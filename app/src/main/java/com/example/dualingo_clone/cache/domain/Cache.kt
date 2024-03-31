@@ -1,7 +1,5 @@
 package com.example.dualingo_clone.cache.domain
 
-import java.util.UUID
-
 interface Cache {
     fun setUserMotherLanguage(languageName: String)
     fun getUserMotherLanguage(): String?

@@ -1,7 +1,6 @@
 package com.example.dualingo_clone.signIn.domain
 
 import com.example.dualingo_clone.dataclasses.User
-import java.lang.Exception
 
 interface LoginRepository {
     suspend fun signUp(user: User): Pair<Boolean, String?>

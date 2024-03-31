@@ -17,7 +17,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ButtonComponent
-import com.example.dualingo_clone.ui.components.Header
 import com.example.dualingo_clone.ui.components.ImageComponent
 import com.example.dualingo_clone.ui.components.LabelWithLinkComponent
 import com.example.dualingo_clone.ui.components.TextComponent

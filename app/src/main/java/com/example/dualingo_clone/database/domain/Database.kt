@@ -2,7 +2,6 @@ package com.example.dualingo_clone.database.domain
 
 import com.example.dualingo_clone.dataclasses.Language
 import com.example.dualingo_clone.dataclasses.User
-import java.lang.Exception
 
 
 interface Database {

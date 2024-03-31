@@ -23,7 +23,6 @@ import com.example.dualingo_clone.signIn.models.LoginViewState
 import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ButtonComponent
 import com.example.dualingo_clone.ui.components.TextInput
-import com.example.dualingo_clone.ui.components.TextVisuals
 
 @Composable
 fun SignUpStartView(
@@ -114,7 +113,7 @@ fun SignUpStartView(
                 .height(56.dp)
                 .width(327.dp)
         ) {
-            if (!viewState.isProgress){
+            if (!viewState.isProgress) {
                 onRegisterClick.invoke()
             }
         }
