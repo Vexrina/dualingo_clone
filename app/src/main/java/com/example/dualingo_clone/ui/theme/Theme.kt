@@ -1,70 +1,105 @@
 package com.example.dualingo_clone.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+
+@Immutable
+data class AppColors(
+    val materialColors: ColorScheme,
+) {
+    val primary = materialColors.primary
+    val secondary = materialColors.secondary
+    val splash = materialColors.background
+    val button = materialColors.onPrimary
+    val userListItem = materialColors.primaryContainer
+    val boldText = materialColors.onSecondary
+    val text = materialColors.onTertiary
+    val activeDot = materialColors.onError
+    val activeLanguage = materialColors.onError
+    val inactiveLanguage = materialColors.onErrorContainer
+    val field = materialColors.onSecondaryContainer
+    val forgotPassword = materialColors.outline
+}
+
+val darkAppColors = AppColors(
+    materialColors = darkColorScheme(
+        primary = Black,
+        secondary = BlackyBlue,
+        background = SplashColor,
+        onPrimary = ButtonColor,
+        primaryContainer = Graye,
+        onSecondary = White,
+        onTertiary = BlackyGray,
+        onError = Orange,
+        onErrorContainer = Whity,
+        onSecondaryContainer = FieldGray,
+        outline = Pink,
+    )
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+val lightAppColors = AppColors(
+    materialColors = lightColorScheme(
+        primary = SplashColor,
+        secondary = White,
+        background = SplashColor,
+        primaryContainer = Graye,
+        onPrimary = ButtonColor,
+        onSecondary = Black,
+        onTertiary = Graye,
+        onError = Orange,
+        onErrorContainer = Whity,
+        onSecondaryContainer = FieldGray,
+        outline = Pink,
+    )
 )
+
+val localAppColors = staticCompositionLocalOf { lightAppColors }
 
 @Composable
 fun Dualingo_cloneTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable (isDarkTheme: Boolean) -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val appColors = if (isDarkTheme) {
+        darkAppColors
+    } else {
+        lightAppColors
     }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
+    val localAppColors = staticCompositionLocalOf { appColors }
+    CompositionLocalProvider(localAppColors provides appColors) {
+        MaterialTheme(
+            colorScheme = appColors.materialColors,
+            shapes = appShapes,
+            typography = appTypography,
+            content = {
+                content(isDarkTheme)
+            }
+        )
     }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
 }
+
+object AppTheme {
+    val colors: AppColors
+        @Composable
+        get() = localAppColors.current
+
+    val shapes: Shapes
+        @Composable
+        get() = MaterialTheme.shapes
+
+    val typography: Typography
+        @Composable
+        get() = MaterialTheme.typography
+}
+
+
