@@ -1,15 +1,17 @@
 package com.example.dualingo_clone.dataclasses
 
+import androidx.compose.ui.graphics.ImageBitmap
 import com.example.dualingo_clone.serializators.UUIDSerializer
 import kotlinx.serialization.Serializable
 import java.util.UUID
 
 @Serializable
-data class User(
+data class TopUsers(
     @Serializable(with = UUIDSerializer::class)
-    val id: UUID?=null,
-    val firstName: String = "",
-    val lastName: String = "",
-    val password: String = "",
-    val email: String = "",
+    val userId: UUID,
+    val imageURL: String,
+    val languageId: String?,
+    val points:Int,
+    val image: ImageBitmap? = null,
+    val fullNames: String? = "",
 )

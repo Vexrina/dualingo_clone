@@ -12,50 +12,84 @@ class SharedPreferencesCache(private val context: Context) : Cache {
     private val KEY_USER_EMAIL = "user_email"
     private val KEY_USER_PWORD = "user_pword"
 
+    /**
+     * Set user mother language to SharedPreferences.
+     * @param languageName will be set as MotherLanguage.
+    */
     override fun setUserMotherLanguage(languageName: String) {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putString(KEY_USER_MOTHER_LANGUAGE_ID, languageName)
         editor.apply()
     }
 
+    /**
+     * Get user mother language from SharedPreferences.
+     * @return MotherLanguage.
+     */
     override fun getUserMotherLanguage(): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString(KEY_USER_MOTHER_LANGUAGE_ID, null)
     }
 
+    /**
+     * Mark all onboard complete
+     */
     override fun markOnboardingComplete() {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putBoolean(KEY_ONBOARDING_COMPLETE, true)
         editor.apply()
     }
 
+    /**
+     * Check completed onboard
+     * @return boolean status
+     */
     override fun isOnboardingComplete(): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(KEY_ONBOARDING_COMPLETE, false)
     }
 
+    /**
+     * Mark first image from onboard as viewed
+     */
     override fun markImage1Viewed() {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putBoolean(KEY_IMAGE1_VIEWED, true)
         editor.apply()
     }
 
+    /**
+     * Check first image from onboard: viewed or not?
+     * @return status of first onboard
+     */
     override fun isImage1Viewed(): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(KEY_IMAGE1_VIEWED, false)
     }
 
+    /**
+     * Mark second image from onboard as viewed
+     */
     override fun markImage2Viewed() {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putBoolean(KEY_IMAGE2_VIEWED, true)
         editor.apply()
     }
 
+    /**
+     * Check second image from onboard: viewed or not?
+     * @return status of second onboard
+     */
     override fun isImage2Viewed(): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getBoolean(KEY_IMAGE2_VIEWED, false)
     }
 
+    /**
+     * Put user email and pwd to SharedPreferences
+     * @param email user's email
+     * @param password user's password
+     */
     override fun userSignIn(email: String, password: String) {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putString(KEY_USER_EMAIL, email)
@@ -63,6 +97,20 @@ class SharedPreferencesCache(private val context: Context) : Cache {
         editor.apply()
     }
 
+    /**
+     * Get users data from SharedPreferences
+     * @return Pair(usersEmail, usersPassword)
+     */
+    override fun getUsersData(): Pair<String?, String?>{
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val email = prefs.getString(KEY_USER_EMAIL, "")
+        val pwd = prefs.getString(KEY_USER_PWORD, "")
+        return Pair(email, pwd)
+    }
+
+    /**
+     * Remove users data from SharedPreferences
+     */
     override fun userSignOut() {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.remove(KEY_USER_EMAIL)

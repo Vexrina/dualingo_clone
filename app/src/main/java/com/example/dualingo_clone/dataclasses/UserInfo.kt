@@ -5,11 +5,10 @@ import kotlinx.serialization.Serializable
 import java.util.UUID
 
 @Serializable
-data class User(
+data class UserInfo(
     @Serializable(with = UUIDSerializer::class)
-    val id: UUID?=null,
-    val firstName: String = "",
-    val lastName: String = "",
-    val password: String = "",
-    val email: String = "",
+    val userId: UUID,
+    val languageId: String? = "",
+    val imageURL: String,
+    val points: Int,
 )

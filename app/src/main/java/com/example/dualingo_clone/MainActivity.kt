@@ -20,6 +20,8 @@ import com.example.dualingo_clone.main.ui.MainScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageViewModel
 import com.example.dualingo_clone.onboard.ui.OnboardScreen
+import com.example.dualingo_clone.profile.ui.ProfileScreen
+import com.example.dualingo_clone.profile.ui.ProfileViewModel
 import com.example.dualingo_clone.signIn.ui.LoginScreen
 import com.example.dualingo_clone.signIn.ui.LoginViewModel
 import com.example.dualingo_clone.splash.SplashScreen
@@ -52,8 +54,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CreateNavHost(navController: NavHostController, startDestination: String) {
-    NavHost(navController = navController, startDestination = startDestination) {
+fun CreateNavHost(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = "main") {
+        composable(route = "splash") { SplashScreen() }
         composable(route = "onboard") { OnboardScreen(navController) }
         composable(route = "motherLanguage") { MotherLanguageScreen(navController) }
         composable(route = "main") { MainScreen(navController) }
@@ -64,7 +67,18 @@ fun CreateNavHost(navController: NavHostController, startDestination: String) {
                 navController = navController,
             )
         }
+        composable(route = "profile") {
+            val profileViewModel = hiltViewModel<ProfileViewModel>()
+            ProfileScreen(
+                navController=navController,
+                profileViewModel = profileViewModel
+            )
+        }
         composable(route = "greetings") { Greeting(name = "Android") }
+        composable(route = "animal_excersise") { Greeting(name = "animal")}
+        composable(route = "word_excersise") { Greeting(name = "word")}
+        composable(route = "audition_excersise") { Greeting(name = "audition")}
+        composable(route = "game_excersise") { Greeting(name = "game")}
     }
 }
 
@@ -73,18 +87,16 @@ fun SplashScreenContent(viewModel: MainViewModel) {
     val navController = rememberNavController()
     val isLoad = viewModel.isLoading.collectAsState()
     val showOnboarding = viewModel.showOnboarding.collectAsState()
+    val isLogin = viewModel.isLogin.collectAsState()
+    CreateNavHost(navController = navController)
     if (isLoad.value) {
         SplashScreen()
     } else if (showOnboarding.value) {
-        CreateNavHost(
-            navController = navController,
-            startDestination = "onboard"
-        )
+        navController.navigate("onboard")
+    } else if (isLogin.value){
+        navController.navigate("main")
     } else {
-        CreateNavHost(
-            navController = navController,
-            startDestination = "signin"
-        )
+        navController.navigate("signin")
     }
 }
 
