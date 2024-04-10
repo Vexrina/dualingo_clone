@@ -1,7 +1,6 @@
 package com.example.dualingo_clone.cache.data
 
 import android.content.Context
-import android.util.Log
 import com.example.dualingo_clone.cache.domain.Cache
 
 class SharedPreferencesCache(private val context: Context) : Cache {

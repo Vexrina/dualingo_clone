@@ -1,8 +1,6 @@
 package com.example.dualingo_clone.database.data
 
-import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.compose.ui.graphics.asImageBitmap
 import com.example.dualingo_clone.database.domain.Database
 import com.example.dualingo_clone.database.info.key
 import com.example.dualingo_clone.database.info.url
@@ -26,11 +24,9 @@ import io.github.jan.supabase.postgrest.query.Order
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.storage.storage
 import io.ktor.client.plugins.HttpRequestTimeoutException
-import java.net.URL
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.Duration.Companion.days
 
 @Singleton
 class DatabaseImpl @Inject constructor() : Database {

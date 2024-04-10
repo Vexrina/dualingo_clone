@@ -6,10 +6,7 @@ import com.example.dualingo_clone.cache.domain.Cache
 import com.example.dualingo_clone.database.data.DatabaseImpl
 import com.example.dualingo_clone.dataclasses.User
 import com.example.dualingo_clone.profile.domain.ProfileScreenRepo
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.io.ByteArrayOutputStream
-import java.net.URL
 
 class ProfileScreenRepoImpl(private val db: DatabaseImpl): ProfileScreenRepo {
     private val cache: Cache = CacheProvider.getCache()

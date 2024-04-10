@@ -7,16 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,14 +22,9 @@ import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ExcersiseCard
 import com.example.dualingo_clone.ui.components.HeaderMainScreen
 import com.example.dualingo_clone.ui.components.TopUserItem
-import java.net.URL
 
 @Composable
 fun MainScreen(navController: NavController){
-    val imageBitmap = BitmapFactory.decodeResource(
-        LocalContext.current.resources,
-        R.drawable.avatar_placeholder
-    )
     val viewModel: MainScreenViewModel = hiltViewModel()
 
     val excersises by viewModel.excersises.collectAsState()
