@@ -29,6 +29,11 @@ data class AppColors(
     val inactiveLanguage = materialColors.onErrorContainer
     val field = materialColors.onSecondaryContainer
     val forgotPassword = materialColors.outline
+
+    val excersise1 = materialColors.surfaceContainerLow
+    val excersise2 = materialColors.surfaceContainerHighest
+    val excersise3 = materialColors.surfaceContainerHigh
+    val excersise4 = materialColors.surfaceContainerLowest
 }
 
 val darkAppColors = AppColors(
@@ -44,6 +49,11 @@ val darkAppColors = AppColors(
         onErrorContainer = Whity,
         onSecondaryContainer = FieldGray,
         outline = Pink,
+
+        surfaceContainerLow = Teal2,
+        surfaceContainerHighest = Pink,
+        surfaceContainerHigh = Orange,
+        surfaceContainerLowest = Teal1,
     )
 )
 
@@ -60,6 +70,11 @@ val lightAppColors = AppColors(
         onErrorContainer = Whity,
         onSecondaryContainer = FieldGray,
         outline = Pink,
+
+        surfaceContainerHigh = Orange,
+        surfaceContainerHighest = Pink,
+        surfaceContainerLow = Teal2,
+        surfaceContainerLowest = Teal1,
     )
 )
 

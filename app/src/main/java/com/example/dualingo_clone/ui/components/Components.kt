@@ -3,6 +3,7 @@ package com.example.dualingo_clone.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
@@ -26,7 +28,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -82,14 +87,21 @@ fun ThreeDotsComponent(
 }
 
 @Composable
-fun BoldText(text: String, modifier: Modifier) {
+fun BoldText(
+    text: String,
+    modifier: Modifier,
+    textColor:Color = AppTheme.colors.boldText,
+    fontSize: Int = 22,
+    textAlign: TextAlign = TextAlign.Center
+    ) {
     BasicText(
         text = text,
         style = TextStyle(
-            fontSize = 22.sp,
-            color = AppTheme.colors.boldText,
+            fontSize = fontSize.sp,
+            color = textColor,
             fontFamily = fredokaFamily,
-            textAlign = TextAlign.Center,
+            textAlign = textAlign,
+            fontWeight = FontWeight.SemiBold,
         ),
         modifier = modifier,
     )
@@ -243,6 +255,98 @@ fun Header(
 }
 
 
+@Composable
+fun HeaderMainScreen(
+    imageResId: Int = R.drawable.avatar_placeholder,
+    profileImage: ImageBitmap? = null,
+    userName: String,
+    onClick: () -> Unit,
+){
+    Column(
+        modifier = Modifier
+            .background(AppTheme.colors.splash)
+            .fillMaxWidth()
+            .height(135.dp)
+    ) {
+        if (profileImage==null){
+            Image(
+                painterResource(id =imageResId),
+                contentDescription = "Avatar",
+                contentScale= ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 24.dp, top = 10.dp)
+                    .size(54.dp)
+                    .clip(CircleShape)
+                    .clickable(onClick=onClick)
+            )
+        } else {
+            Image(
+                bitmap = profileImage,
+                contentDescription = "Avatar",
+                contentScale= ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 24.dp, top = 10.dp)
+                    .size(54.dp)
+                    .clip(CircleShape)
+                    .clickable(onClick=onClick)
+            )
+        }
+        BoldText(
+            text = "Hello, $userName",
+            modifier = Modifier
+                .padding(top=8.dp, start=24.dp),
+            textColor = Color.White
+        )
+        TextComponent(
+            text = "Are you ready for learning today?",
+            modifier = Modifier
+                .padding(top=5.dp, bottom = 11.dp, start=24.dp)
+        )
+    }
+}
+
+@Composable
+fun HeaderProfile(
+    imageResId: Int = R.drawable.avatar_placeholder,
+    profileImage: ImageBitmap? = null,
+    userName: String,
+){
+    Column(
+        modifier = Modifier
+            .background(AppTheme.colors.splash)
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+        if (profileImage==null){
+            Image(
+                painterResource(id =imageResId),
+                contentDescription = "Avatar",
+                contentScale= ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 24.dp, top = 10.dp)
+                    .size(134.dp)
+                    .clip(CircleShape)
+            )
+        } else {
+            Image(
+                bitmap = profileImage,
+                contentDescription = "Avatar",
+                contentScale= ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 24.dp, top = 10.dp)
+                    .size(134.dp)
+                    .clip(CircleShape)
+            )
+        }
+        BoldText(
+            text = "Your profile, $userName",
+            modifier = Modifier
+                .padding(top=8.dp, start=24.dp),
+            textColor = Color.White
+        )
+    }
+}
+
 enum class TextVisuals {
     Text, Password,
 }
@@ -330,6 +434,108 @@ fun TextInput(
             placeholder = header,
             textVisuals = textVisuals,
             trailingIcon = trailingIcon,
+        )
+    }
+}
+
+@Composable
+fun TopUserItem(
+    imageBitmap: ImageBitmap,
+    userName: String,
+    points: Int,
+){
+    Row(
+        horizontalArrangement=Arrangement.Center,
+        verticalAlignment=Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(start = 24.dp, top = 10.dp, end = 24.dp)
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(AppTheme.colors.userListItem)
+            .fillMaxWidth()
+            .height(64.dp)
+            .wrapContentHeight(),
+    ){
+        Image(
+            bitmap = imageBitmap,
+            contentDescription = "Avatar $userName",
+            contentScale= ContentScale.Crop,
+            modifier = Modifier
+                .padding(start = 16.dp,)
+                .height(24.dp)
+                .width(36.dp)
+                .clip(CircleShape)
+        )
+        Text(
+            text = userName,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = fredokaFamily,
+                textAlign = TextAlign.Start,
+                color = AppTheme.colors.boldText,
+                fontWeight = FontWeight.SemiBold,
+            ),
+            modifier = Modifier
+                .padding(start = 24.dp)
+                .width(170.dp)
+                .wrapContentHeight(align = Alignment.CenterVertically)
+        )
+        Text(
+            text = "$points points",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = fredokaFamily,
+                textAlign = TextAlign.End,
+                color = AppTheme.colors.boldText,
+                fontWeight = FontWeight.SemiBold,
+            ),
+            modifier = Modifier
+                .padding(start = 1.dp, end = 13.dp)
+                .width(70.dp)
+                .wrapContentHeight(align = Alignment.CenterVertically)
+        )
+    }
+}
+
+@Composable
+fun ExcersiseCard(
+    smile:String,
+    text:String,
+    backgroundColor: Color,
+    index: Int,
+    onClick: () -> Unit,
+){
+    Column(
+        modifier=Modifier
+            .padding(
+                start=if(index%2==0) 24.dp else 20.dp,
+                top=16.dp,
+                end=if(index%2==1) 24.dp else 0.dp
+            )
+            .clip(RoundedCornerShape(20.dp))
+            .background(backgroundColor)
+            .width(150.dp)
+            .height(120.dp)
+            .clickable(onClick=onClick),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+    ){
+        BasicText(
+            text = smile,
+            modifier = Modifier,
+            style = TextStyle(
+                fontSize = 72.sp
+            )
+            )
+        BasicText(
+            text = text,
+            modifier = Modifier
+                .padding(top=0.dp),
+            style = TextStyle(
+                fontFamily = fredokaFamily,
+                color = Color.White,
+                fontSize = 18.sp
+            )
         )
     }
 }
