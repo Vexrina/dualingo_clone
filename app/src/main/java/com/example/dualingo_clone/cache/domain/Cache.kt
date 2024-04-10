@@ -3,7 +3,6 @@ package com.example.dualingo_clone.cache.domain
 interface Cache {
     fun setUserMotherLanguage(languageName: String)
     fun getUserMotherLanguage(): String?
-
     fun markOnboardingComplete()
     fun isOnboardingComplete(): Boolean
     fun isImage1Viewed(): Boolean
@@ -12,4 +11,5 @@ interface Cache {
     fun isImage2Viewed(): Boolean
     fun userSignOut()
     fun userSignIn(email: String, password: String)
+    fun getUsersData(): Pair<String?, String?>
 }
