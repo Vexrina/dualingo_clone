@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ViewModelModule {
+object MotherLanguageViewModelModule {
     @Provides
     fun provideMotherLanguageViewModel(db: DatabaseImpl): MotherLanguageViewModel {
         return MotherLanguageViewModel(db)
