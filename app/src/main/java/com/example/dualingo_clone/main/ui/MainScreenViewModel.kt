@@ -1,7 +1,6 @@
 package com.example.dualingo_clone.main.ui
 
 import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
@@ -65,7 +64,6 @@ class MainScreenViewModel @Inject constructor(private val db: DatabaseImpl):View
             val newUsers = mutableListOf<TopUsers>()
             for (i in 0..2){
                 val user = repo.getUserById(topUsrs[i].userId)
-                Log.d("INFO", user.firstName)
                 val byteArray = URL(topUsrs[i].imageURL).readBytes()
                 val imgBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size).asImageBitmap()
                 newUsers.add(TopUsers(
