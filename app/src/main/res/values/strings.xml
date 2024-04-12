@@ -21,4 +21,7 @@
     <string name="animalGuessInputHint">Write who is on image</string>
     <string name="NextButton">Next</string>
     <string name="TryAgainButton">Try again</string>
+    <string name="wordExcersiseHeader">Word practice</string>
+    <string name="checkButton">Check</string>
+    <string name="nextButton">Next</string>
 </resources>

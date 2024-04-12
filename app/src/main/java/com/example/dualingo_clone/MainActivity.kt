@@ -29,6 +29,8 @@ import com.example.dualingo_clone.signIn.ui.LoginViewModel
 import com.example.dualingo_clone.splash.SplashScreen
 import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.ui.theme.Dualingo_cloneTheme
+import com.example.dualingo_clone.word_excersise.ui.WordExcersiseScreen
+import com.example.dualingo_clone.word_excersise.ui.WordExcersiseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -84,7 +86,13 @@ fun CreateNavHost(navController: NavHostController) {
                 navController = navController
             )
         }
-        composable(route = "word_excersise") { Greeting(name = "word")}
+        composable(route = "word_excersise") {
+           val wordViewModel = hiltViewModel<WordExcersiseViewModel>()
+            WordExcersiseScreen(
+                wordViewModel = wordViewModel,
+                navController = navController
+            )
+        }
         composable(route = "audition_excersise") { Greeting(name = "audition")}
         composable(route = "game_excersise") { Greeting(name = "game")}
     }
