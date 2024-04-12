@@ -1,6 +1,5 @@
 package com.example.dualingo_clone.animal_excersise.models
 
-import android.graphics.Bitmap
 import com.example.dualingo_clone.dataclasses.Quest
 import com.example.dualingo_clone.dataclasses.User
 import com.example.dualingo_clone.dataclasses.UserInfo

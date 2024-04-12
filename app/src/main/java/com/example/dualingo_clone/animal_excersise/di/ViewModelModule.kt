@@ -2,7 +2,6 @@ package com.example.dualingo_clone.animal_excersise.di
 
 import com.example.dualingo_clone.animal_excersise.ui.AnimalExcersiseViewModel
 import com.example.dualingo_clone.database.data.DatabaseImpl
-import com.example.dualingo_clone.main.ui.MainScreenViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

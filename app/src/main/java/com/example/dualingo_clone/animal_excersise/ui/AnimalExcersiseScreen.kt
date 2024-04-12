@@ -69,7 +69,6 @@ fun AnimalExcersiseScreen(
                             }
                         )
                         AnimalExcersiseSubState.Correct -> AnimalCorrectView(
-                            viewState = this@with,
                             onNextClick = {
                                 animalViewModel.obtainEvent(AnimalExcersiseEvent.NextQuest)
                             }
