@@ -99,16 +99,10 @@ fun WordExcersiseScreen(
                             onAnswerChanged = {
                                 wordViewModel.obtainEvent(WordExcersiseEvent.AnswerChanged(it))
                             },
-                            onCheckClick = {
-                                wordViewModel.obtainEvent(WordExcersiseEvent.CheckAnswer)
-                            }
                         )
 
                         WordExcersiseSubState.Correct -> WordCorrectView(
                             viewState = this@with,
-                            onNextClick = {
-                                wordViewModel.obtainEvent(WordExcersiseEvent.NextQuest)
-                            }
                         )
                     }
                 }

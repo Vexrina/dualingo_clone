@@ -24,7 +24,6 @@ import com.example.dualingo_clone.word_excersise.models.WordExcersiseViewState
 fun WordQuestView(
     viewState: WordExcersiseViewState,
     onAnswerChanged: (Word) -> Unit,
-    onCheckClick: () -> Unit,
 ) {
     val quests = viewState.questValue
     val correctWord = viewState.correctWord

@@ -9,11 +9,8 @@ import java.util.UUID
 data class Quest(
     @Serializable(with = UUIDSerializer::class)
     val id: UUID? = null,
-    val imgURL: String="",
-    val answer1: String="",
-    val answer2: String="",
-    val answer3: String="",
-    val answer4: String="",
-    val correct: Int=0,
+    val imgURL: String = "",
+    val answer1: String = "",
+    val correct: Int = 0,
     val imageBitmap: ImageBitmap? = null,
 )

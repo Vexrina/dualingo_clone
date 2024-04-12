@@ -1,6 +1,5 @@
 package com.example.dualingo_clone.animal_excersise.data
 
-import android.util.Log
 import com.example.dualingo_clone.animal_excersise.domain.AnimalExcersise
 import com.example.dualingo_clone.cache.data.CacheProvider
 import com.example.dualingo_clone.cache.domain.Cache
@@ -20,9 +19,7 @@ class AnimalExcersiseRepoImpl(private val db: DatabaseImpl):AnimalExcersise {
     override suspend fun setCompleteExcersise(user: UserInfo, quest: Quest) {
         val completedQuest = CompletedQuest(user.userId, quest.id!!)
         db.setQuestCompleted(completedQuest, "animal")
-        Log.d("Repo", "SetQuestCompleted")
         db.updatePoints(user)
-        Log.d("Repo", "UpdatePoints")
     }
 
     override suspend fun getUserData(): Pair<User, UserInfo>{

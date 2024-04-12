@@ -78,9 +78,9 @@ fun AnimalQuestView(
                 )
             )
             ButtonComponent(
-                text = "Check",
+                text = stringResource(id = R.string.checkButton),
                 modifier = Modifier
-                    .padding(top=16.dp)
+                    .padding(top = 16.dp)
                     .width(328.dp)
                     .height(56.dp),
                 onClick = onCheckClick

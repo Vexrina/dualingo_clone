@@ -128,7 +128,6 @@ class AnimalExcersiseViewModel @Inject constructor(
 
     private fun setCompletedQuest(userInfo: UserInfo, quest: Quest){
         viewModelScope.launch(Dispatchers.IO) {
-
             repo.setCompleteExcersise(userInfo, quest)
         }
     }

@@ -8,9 +8,9 @@ enum class AnimalExcersiseSubState {
     Quest, Correct, Uncorrect
 }
 
-sealed class ProfileAction{
-    data class OpenDashBoard(val username: String) : ProfileAction()
-    object None : ProfileAction()
+sealed class AnimalExcersiseAction{
+    data class OpenDashBoard(val username: String) : AnimalExcersiseAction()
+    object None : AnimalExcersiseAction()
 }
 
 data class AnimalExcersiseViewState(
