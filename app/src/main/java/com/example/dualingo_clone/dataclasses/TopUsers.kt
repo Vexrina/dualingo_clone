@@ -11,7 +11,7 @@ data class TopUsers(
     val userId: UUID,
     val imageURL: String,
     val languageId: String?,
-    val points:Int,
+    val points:Double,
     val image: ImageBitmap? = null,
     val fullNames: String? = "",
 )

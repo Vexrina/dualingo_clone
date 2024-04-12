@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -277,7 +278,7 @@ fun HeaderMainScreen(
                     .padding(start = 24.dp, top = 10.dp)
                     .size(54.dp)
                     .clip(CircleShape)
-                    .clickable(onClick=onClick)
+                    .clickable(onClick = onClick)
             )
         } else {
             Image(
@@ -288,7 +289,7 @@ fun HeaderMainScreen(
                     .padding(start = 24.dp, top = 10.dp)
                     .size(54.dp)
                     .clip(CircleShape)
-                    .clickable(onClick=onClick)
+                    .clickable(onClick = onClick)
             )
         }
         BoldText(
@@ -442,7 +443,7 @@ fun TextInput(
 fun TopUserItem(
     imageBitmap: ImageBitmap,
     userName: String,
-    points: Int,
+    points: Double,
 ){
     Row(
         horizontalArrangement=Arrangement.Center,
@@ -505,17 +506,17 @@ fun ExcersiseCard(
     onClick: () -> Unit,
 ){
     Column(
-        modifier=Modifier
+        modifier= Modifier
             .padding(
-                start=if(index%2==0) 24.dp else 20.dp,
-                top=16.dp,
-                end=if(index%2==1) 24.dp else 0.dp
+                start = if (index % 2 == 0) 24.dp else 20.dp,
+                top = 16.dp,
+                end = if (index % 2 == 1) 24.dp else 0.dp
             )
             .clip(RoundedCornerShape(20.dp))
             .background(backgroundColor)
             .width(150.dp)
             .height(120.dp)
-            .clickable(onClick=onClick),
+            .clickable(onClick = onClick),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
@@ -537,5 +538,43 @@ fun ExcersiseCard(
                 fontSize = 18.sp
             )
         )
+    }
+}
+
+@Composable
+fun AnimalImage(
+    image: ImageBitmap? = null,
+    fail: Boolean = false,
+    correctAnswer: String? = null,
+    modifier: Modifier,
+    smileModifier: Modifier = Modifier,
+){
+    if (image != null){
+        Image(
+            bitmap = image,
+            contentDescription = stringResource(id = R.string.animalExcersiseHeader),
+            modifier = modifier,
+        )
+    } else {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = if (!fail) "😿" else "🎉",
+                modifier = smileModifier,
+                style = TextStyle(
+                    fontSize = 160.sp
+                )
+            )
+            BoldText(
+                text = if (!fail) {
+                    stringResource(id = R.string.failAnswer)+correctAnswer
+                } else {
+                    stringResource(id = R.string.correctAnswer)
+                },
+                modifier = modifier,
+                fontSize = 20,
+            )
+        }
     }
 }

@@ -15,4 +15,10 @@
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="photoScreenTitle">Your photo is gorgeous!</string>
     <string name="photoScreenHint">Just resize that photo for fit in square</string>
+    <string name="animalExcersiseHeader">Guess the animal</string>
+    <string name="failAnswer">"Eh? Wrong answer :(\nThat is: "</string>
+    <string name="correctAnswer">Holy Molly! That is Right!</string>
+    <string name="animalGuessInputHint">Write who is on image</string>
+    <string name="NextButton">Next</string>
+    <string name="TryAgainButton">Try again</string>
 </resources>

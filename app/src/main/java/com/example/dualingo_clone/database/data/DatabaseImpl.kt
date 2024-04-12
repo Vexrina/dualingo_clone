@@ -4,7 +4,9 @@ import android.util.Log
 import com.example.dualingo_clone.database.domain.Database
 import com.example.dualingo_clone.database.info.key
 import com.example.dualingo_clone.database.info.url
+import com.example.dualingo_clone.dataclasses.CompletedQuest
 import com.example.dualingo_clone.dataclasses.Language
+import com.example.dualingo_clone.dataclasses.Quest
 import com.example.dualingo_clone.dataclasses.TopUsers
 import com.example.dualingo_clone.dataclasses.User
 import com.example.dualingo_clone.dataclasses.UserInfo
@@ -21,12 +23,15 @@ import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import io.github.jan.supabase.postgrest.query.Order
+import io.github.jan.supabase.postgrest.query.filter.FilterOperation
+import io.github.jan.supabase.postgrest.query.filter.FilterOperator
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.storage.storage
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class DatabaseImpl @Inject constructor() : Database {
@@ -48,7 +53,6 @@ class DatabaseImpl @Inject constructor() : Database {
             install(Storage)
         }
     }
-
 
     override suspend fun signUp(userData: User): Pair<Boolean, String?> {
         try {
@@ -208,8 +212,6 @@ class DatabaseImpl @Inject constructor() : Database {
                 .from("users_avatars")
                 .publicUrl(uuid.toString())
 
-            Log.d("URLINFO", url)
-
             updatePicInTable(uuid, url)
 
             return Pair(url, "")
@@ -220,11 +222,12 @@ class DatabaseImpl @Inject constructor() : Database {
     }
 
     override suspend fun updatePicInTable(uuid:UUID, url:String){
+        // rewrite with upsert
         try{
             val userInfo = UserInfo(
                 userId = uuid,
                 imageURL = url,
-                points = 0,
+                points = 0.0,
             )
             supabaseClient!!
                 .from("usersInfo")
@@ -263,5 +266,44 @@ class DatabaseImpl @Inject constructor() : Database {
                     eq("id", id)
                 }
             }.decodeSingle<User>()
+    }
+
+    override suspend fun setQuestCompleted(completedQuest: CompletedQuest, questType: String){
+        supabaseClient!!
+            .from("${questType}QuestCompleted")
+            .insert(completedQuest)
+    }
+
+    override suspend fun updatePoints(user: UserInfo){
+        supabaseClient!!
+            .from("usersInfo")
+            .upsert(user)
+
+    }
+    private fun filterQuests(quests: List<Quest>, completedQuests: List<CompletedQuest>): List<Quest>{
+        val completedQuestIds = completedQuests.map { it.questId }
+        return quests.filterNot { quest -> quest.id in completedQuestIds }
+    }
+    override suspend fun getRandomQuest(user: User, questType: String): Quest {
+        try {
+            val completedQuest = supabaseClient!!
+                .from("${questType}QuestCompleted")
+                .select(Columns.ALL){
+                    filter {
+                        eq("userId", user.id!!)
+                    }
+                }.decodeList<CompletedQuest>()
+            Log.d("DB", "Completed quest size is ${completedQuest.size}")
+            val quests = supabaseClient!!
+                .from("${questType}Quest")
+                .select(Columns.ALL){}
+                .decodeList<Quest>()
+            Log.d("DB", "Quests size is ${completedQuest.size}")
+            val filteredQuest = filterQuests(quests, completedQuest)
+            return filteredQuest[Random.nextInt(filteredQuest.size)]
+        } catch (e: Exception){
+            Log.d("DB", "Exception is ${e.message}")
+            return Quest()
+        }
     }
 }

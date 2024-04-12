@@ -1,5 +1,6 @@
-package com.example.dualingo_clone.main.di
+package com.example.dualingo_clone.animal_excersise.di
 
+import com.example.dualingo_clone.animal_excersise.ui.AnimalExcersiseViewModel
 import com.example.dualingo_clone.database.data.DatabaseImpl
 import com.example.dualingo_clone.main.ui.MainScreenViewModel
 import dagger.Module
@@ -11,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object ViewModelModule {
     @Provides
-    fun provideMainScreenViewModel(db: DatabaseImpl): MainScreenViewModel {
-        return MainScreenViewModel(db)
+    fun provideAnimalExcersiseViewModel(db: DatabaseImpl): AnimalExcersiseViewModel {
+        return AnimalExcersiseViewModel(db)
     }
 }
