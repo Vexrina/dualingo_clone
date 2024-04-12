@@ -1,7 +1,7 @@
-package com.example.dualingo_clone.main.di
+package com.example.dualingo_clone.profile.di
 
 import com.example.dualingo_clone.database.data.DatabaseImpl
-import com.example.dualingo_clone.main.ui.MainScreenViewModel
+import com.example.dualingo_clone.profile.ui.ProfileViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,9 +9,9 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ViewModelModule {
+object ProfileViewModelModule {
     @Provides
-    fun provideMainScreenViewModel(db: DatabaseImpl): MainScreenViewModel {
-        return MainScreenViewModel(db)
+    fun provideProfileScreenViewModel(db: DatabaseImpl): ProfileViewModel {
+        return ProfileViewModel(db)
     }
 }

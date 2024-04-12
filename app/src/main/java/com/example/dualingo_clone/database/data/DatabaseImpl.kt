@@ -4,10 +4,13 @@ import android.util.Log
 import com.example.dualingo_clone.database.domain.Database
 import com.example.dualingo_clone.database.info.key
 import com.example.dualingo_clone.database.info.url
+import com.example.dualingo_clone.dataclasses.CompletedQuest
 import com.example.dualingo_clone.dataclasses.Language
+import com.example.dualingo_clone.dataclasses.Quest
 import com.example.dualingo_clone.dataclasses.TopUsers
 import com.example.dualingo_clone.dataclasses.User
 import com.example.dualingo_clone.dataclasses.UserInfo
+import com.example.dualingo_clone.dataclasses.Word
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.exceptions.BadRequestRestException
@@ -27,6 +30,7 @@ import io.ktor.client.plugins.HttpRequestTimeoutException
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class DatabaseImpl @Inject constructor() : Database {
@@ -48,7 +52,6 @@ class DatabaseImpl @Inject constructor() : Database {
             install(Storage)
         }
     }
-
 
     override suspend fun signUp(userData: User): Pair<Boolean, String?> {
         try {
@@ -137,21 +140,21 @@ class DatabaseImpl @Inject constructor() : Database {
         return true
     }
 
-    override suspend fun getUserData(user:User): Pair<User, UserInfo> {
+    override suspend fun getUserData(user: User): Pair<User, UserInfo> {
         try {
             val userInfo: UserInfo = supabaseClient!!
                 .from("usersInfo")
-                .select() {
+                .select {
                     filter {
                         eq("userId", user.id!!)
                     }
                 }
                 .decodeSingle<UserInfo>()
             return Pair(user, userInfo)
-        } catch (e:Exception){
+        } catch (e: Exception) {
             val newUser = supabaseClient!!
                 .from("users")
-                .select() {
+                .select {
                     filter {
                         eq("email", user.email)
                         eq("password", user.password)
@@ -162,7 +165,7 @@ class DatabaseImpl @Inject constructor() : Database {
                 .decodeSingle<User>()
             val userInfo: UserInfo = supabaseClient!!
                 .from("usersInfo")
-                .select() {
+                .select {
                     filter {
                         eq("userId", newUser.id!!)
                     }
@@ -195,12 +198,12 @@ class DatabaseImpl @Inject constructor() : Database {
             val uuid: UUID = user.id!!
             val buckets = supabaseClient!!.storage.from("users_avatars")
 
-            val bucket = buckets.list().find{bucketItem -> uuid.toString() == bucketItem.name }
+            val bucket = buckets.list().find { bucketItem -> uuid.toString() == bucketItem.name }
 
-            if (bucket!=null){
-                buckets.update(path=uuid.toString(), byteArray, upsert = false)
-            } else{
-                buckets.upload(path=uuid.toString(), byteArray, upsert = false)
+            if (bucket != null) {
+                buckets.update(path = uuid.toString(), byteArray, upsert = false)
+            } else {
+                buckets.upload(path = uuid.toString(), byteArray, upsert = false)
             }
 
             val url = supabaseClient!!
@@ -208,33 +211,32 @@ class DatabaseImpl @Inject constructor() : Database {
                 .from("users_avatars")
                 .publicUrl(uuid.toString())
 
-            Log.d("URLINFO", url)
-
             updatePicInTable(uuid, url)
 
             return Pair(url, "")
-        } catch (e:Exception){
+        } catch (e: Exception) {
             Log.d("INFO", "${e.message}")
             return Pair("", e.message)
         }
     }
 
-    override suspend fun updatePicInTable(uuid:UUID, url:String){
-        try{
+    override suspend fun updatePicInTable(uuid: UUID, url: String) {
+        // rewrite with upsert
+        try {
             val userInfo = UserInfo(
                 userId = uuid,
                 imageURL = url,
-                points = 0,
+                points = 0.0,
             )
             supabaseClient!!
                 .from("usersInfo")
                 .insert(userInfo)
-        } catch (e:Exception){
+        } catch (e: Exception) {
             supabaseClient!!
                 .from("usersInfo")
                 .update({
                     set("imageURL", url)
-                }){
+                }) {
                     filter {
                         eq("userId", uuid)
                     }
@@ -242,26 +244,88 @@ class DatabaseImpl @Inject constructor() : Database {
         }
     }
 
-    override suspend fun getTopUsers(): List<TopUsers>{
+    override suspend fun getTopUsers(): List<TopUsers> {
         val users = supabaseClient!!
             .from("usersInfo")
-            .select(Columns.ALL){
+            .select(Columns.ALL) {
                 order("points", Order.DESCENDING)
                 limit(3)
             }
             .decodeList<TopUsers>()
         return users
     }
-    override suspend fun getUserById(id:UUID): User{
+
+    override suspend fun getUserById(id: UUID): User {
         return supabaseClient!!
             .from("users")
-            .select(Columns.list(
-                "firstName",
-                "lastName",
-            )){
+            .select(
+                Columns.list(
+                    "firstName",
+                    "lastName",
+                )
+            ) {
                 filter {
                     eq("id", id)
                 }
             }.decodeSingle<User>()
+    }
+
+    override suspend fun setQuestCompleted(completedQuest: CompletedQuest, questType: String) {
+        supabaseClient!!
+            .from("${questType}QuestCompleted")
+            .insert(completedQuest)
+    }
+
+    override suspend fun updatePoints(user: UserInfo) {
+        supabaseClient!!
+            .from("usersInfo")
+            .upsert(user)
+
+    }
+
+    private fun filterQuests(
+        quests: List<Quest>,
+        completedQuests: List<CompletedQuest>,
+    ): List<Quest> {
+        val completedQuestIds = completedQuests.map { it.questId }
+        return quests.filterNot { quest -> quest.id in completedQuestIds }
+    }
+
+    override suspend fun getRandomQuest(user: User, questType: String): Quest {
+        try {
+            val completedQuest = supabaseClient!!
+                .from("${questType}QuestCompleted")
+                .select(Columns.ALL) {
+                    filter {
+                        eq("userId", user.id!!)
+                    }
+                }.decodeList<CompletedQuest>()
+            Log.d("DB", "Completed quest size is ${completedQuest.size}")
+            val quests = supabaseClient!!
+                .from("${questType}Quest")
+                .select(Columns.ALL) {}
+                .decodeList<Quest>()
+            Log.d("DB", "Quests size is ${completedQuest.size}")
+            val filteredQuest = filterQuests(quests, completedQuest)
+            return filteredQuest[Random.nextInt(filteredQuest.size)]
+        } catch (e: Exception) {
+            Log.d("DB", "Exception is ${e.message}")
+            return Quest()
+        }
+    }
+
+    override suspend fun getRandomWords(): List<Word> {
+        return supabaseClient!!
+            .from("random_word")
+            .select(
+                Columns.list(
+                    "enWord",
+                    "transcription",
+                    "ruWord",
+                )
+            ) {
+                limit(4)
+            }
+            .decodeList<Word>()
     }
 }

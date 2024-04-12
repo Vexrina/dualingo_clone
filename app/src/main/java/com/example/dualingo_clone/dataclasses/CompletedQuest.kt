@@ -5,10 +5,9 @@ import kotlinx.serialization.Serializable
 import java.util.UUID
 
 @Serializable
-data class UserInfo(
+data class CompletedQuest(
     @Serializable(with = UUIDSerializer::class)
     val userId: UUID,
-    val languageId: String? = "",
-    val imageURL: String = "",
-    val points: Double = 0.0,
+    @Serializable(with = UUIDSerializer::class)
+    val questId: UUID,
 )
