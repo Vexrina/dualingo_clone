@@ -1,4 +1,4 @@
-package com.example.dualingo_clone.word_excersise.views
+package com.example.dualingo_clone.game_excersise.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,15 +20,16 @@ import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.word_excersise.models.WordExcersiseViewState
 
 @Composable
-fun WordCorrectView(
+fun GameCorrectView(
     viewState: WordExcersiseViewState,
-) {
+){
     val quests = viewState.questValue
     val correctWord = viewState.correctWord
     val buttonModifier = Modifier
         .padding(top = 10.dp)
         .width(328.dp)
         .height(56.dp)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +65,16 @@ fun WordCorrectView(
                         viewState.correctWord -> AppTheme.colors.excersise4
                         viewState.selectedWord -> AppTheme.colors.activeLanguage
                         else -> AppTheme.colors.userListItem
-                    }
+                    },
+                    gameButton = true,
+                    choiceUser =
+                        if (quest==viewState.selectedWord && quest==viewState.robotSelectWord){
+                            3
+                        } else if (quest==viewState.selectedWord){
+                            1
+                        } else if (quest==viewState.robotSelectWord) {
+                            2
+                        } else 0
                 ) {
 
                 }

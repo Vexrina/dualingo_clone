@@ -1,5 +1,11 @@
 package com.example.dualingo_clone.ui.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,11 +32,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -62,7 +73,7 @@ fun ThreeDotsComponent(
     dotSpacing: Dp = 8.dp,
     modifier: Modifier,
 
-    dotIndexInColorA: Int
+    dotIndexInColorA: Int,
 ) {
     val activeColor = AppTheme.colors.activeDot
     val nonActiveColor = AppTheme.colors.userListItem
@@ -91,10 +102,10 @@ fun ThreeDotsComponent(
 fun BoldText(
     text: String,
     modifier: Modifier,
-    textColor:Color = AppTheme.colors.boldText,
+    textColor: Color = AppTheme.colors.boldText,
     fontSize: Int = 22,
-    textAlign: TextAlign = TextAlign.Center
-    ) {
+    textAlign: TextAlign = TextAlign.Center,
+) {
     BasicText(
         text = text,
         style = TextStyle(
@@ -195,7 +206,9 @@ fun ButtonComponent(
     textAlign: TextAlign = TextAlign.Center,
     textColor: Color = Color.White,
     radius: Int = 12,
-    onClick: () -> Unit
+    gameButton: Boolean = false,
+    choiceUser: Int = 0,
+    onClick: () -> Unit,
 ) {
     Button(
         onClick = onClick,
@@ -203,15 +216,64 @@ fun ButtonComponent(
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         modifier = modifier
     ) {
-        Text(
-            text = text,
-            style = TextStyle(
-                fontFamily = fredokaFamily,
-                color = textColor,
-                textAlign = textAlign,
-                fontSize = 20.sp,
+        if (gameButton) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = if (choiceUser!= 0) Arrangement.Start else Arrangement.SpaceAround,
+            ) {
+                Box(
+                    modifier = Modifier.weight(0.5F),
+                    contentAlignment = Alignment.TopStart
+                ){
+                    Text(
+                        text = when (choiceUser) {
+                            1 ->    "You"
+                            2 ->    "P2"
+                            3 ->    "Both"
+                            else -> ""
+                        },
+                        style = TextStyle(
+                            fontFamily = fredokaFamily,
+                            color = textColor,
+                            textAlign = TextAlign.Start,
+                            fontSize = 20.sp,
+                        )
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = text,
+                        modifier = if (choiceUser!=0) Modifier.padding(start = 20.dp) else Modifier,
+                        style = TextStyle(
+                            fontFamily = fredokaFamily,
+                            color = textColor,
+                            textAlign = textAlign,
+                            fontSize = 20.sp,
+                        )
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(0.5F),
+                    contentAlignment = Alignment.TopEnd
+                ){
+                    Text(text = "    ")
+                }
+            }
+        } else {
+            Text(
+                text = text,
+                style = TextStyle(
+                    fontFamily = fredokaFamily,
+                    color = textColor,
+                    textAlign = textAlign,
+                    fontSize = 20.sp,
+                )
             )
-        )
+        }
     }
 }
 
@@ -262,18 +324,18 @@ fun HeaderMainScreen(
     profileImage: ImageBitmap? = null,
     userName: String,
     onClick: () -> Unit,
-){
+) {
     Column(
         modifier = Modifier
             .background(AppTheme.colors.splash)
             .fillMaxWidth()
             .height(135.dp)
     ) {
-        if (profileImage==null){
+        if (profileImage == null) {
             Image(
-                painterResource(id =imageResId),
+                painterResource(id = imageResId),
                 contentDescription = "Avatar",
-                contentScale= ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(start = 24.dp, top = 10.dp)
                     .size(54.dp)
@@ -284,7 +346,7 @@ fun HeaderMainScreen(
             Image(
                 bitmap = profileImage,
                 contentDescription = "Avatar",
-                contentScale= ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(start = 24.dp, top = 10.dp)
                     .size(54.dp)
@@ -295,13 +357,13 @@ fun HeaderMainScreen(
         BoldText(
             text = "Hello, $userName",
             modifier = Modifier
-                .padding(top=8.dp, start=24.dp),
+                .padding(top = 8.dp, start = 24.dp),
             textColor = Color.White
         )
         TextComponent(
             text = "Are you ready for learning today?",
             modifier = Modifier
-                .padding(top=5.dp, bottom = 11.dp, start=24.dp)
+                .padding(top = 5.dp, bottom = 11.dp, start = 24.dp)
         )
     }
 }
@@ -311,18 +373,18 @@ fun HeaderProfile(
     imageResId: Int = R.drawable.avatar_placeholder,
     profileImage: ImageBitmap? = null,
     userName: String,
-){
+) {
     Column(
         modifier = Modifier
             .background(AppTheme.colors.splash)
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        if (profileImage==null){
+        if (profileImage == null) {
             Image(
-                painterResource(id =imageResId),
+                painterResource(id = imageResId),
                 contentDescription = "Avatar",
-                contentScale= ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(start = 24.dp, top = 10.dp)
                     .size(134.dp)
@@ -332,7 +394,7 @@ fun HeaderProfile(
             Image(
                 bitmap = profileImage,
                 contentDescription = "Avatar",
-                contentScale= ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(start = 24.dp, top = 10.dp)
                     .size(134.dp)
@@ -342,7 +404,7 @@ fun HeaderProfile(
         BoldText(
             text = "Your profile, $userName",
             modifier = Modifier
-                .padding(top=8.dp, start=24.dp),
+                .padding(top = 8.dp, start = 24.dp),
             textColor = Color.White
         )
     }
@@ -444,10 +506,10 @@ fun TopUserItem(
     imageBitmap: ImageBitmap,
     userName: String,
     points: Double,
-){
+) {
     Row(
-        horizontalArrangement=Arrangement.Center,
-        verticalAlignment=Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(start = 24.dp, top = 10.dp, end = 24.dp)
             .clip(shape = RoundedCornerShape(20.dp))
@@ -455,13 +517,13 @@ fun TopUserItem(
             .fillMaxWidth()
             .height(64.dp)
             .wrapContentHeight(),
-    ){
+    ) {
         Image(
             bitmap = imageBitmap,
             contentDescription = "Avatar $userName",
-            contentScale= ContentScale.Crop,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .padding(start = 16.dp,)
+                .padding(start = 16.dp)
                 .height(24.dp)
                 .width(36.dp)
                 .clip(CircleShape)
@@ -499,39 +561,63 @@ fun TopUserItem(
 
 @Composable
 fun ExcersiseCard(
-    smile:String,
-    text:String,
+    smile: String,
+    text: String,
     backgroundColor: Color,
     index: Int,
+    radius: Dp = 20.dp,
+    width: Dp = 150.dp,
+    height: Dp = 120.dp,
+    animation: Boolean = false,
     onClick: () -> Unit,
-){
+) {
+
+    var pulse by remember { mutableFloatStateOf(1f) }
+
+    if (animation){
+        val infiniteTransition = rememberInfiniteTransition(label = "PulseAnimation")
+
+        pulse = infiniteTransition.animateFloat(
+            initialValue = 1f,
+            targetValue = 1.1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 1000,
+                    easing = FastOutSlowInEasing
+                ),
+                repeatMode = RepeatMode.Reverse
+            ), label = "PulseAnimation"
+        ).value
+    }
+
     Column(
-        modifier= Modifier
+        modifier = Modifier
             .padding(
                 start = if (index % 2 == 0) 24.dp else 20.dp,
                 top = 16.dp,
                 end = if (index % 2 == 1) 24.dp else 0.dp
             )
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(radius))
             .background(backgroundColor)
-            .width(150.dp)
-            .height(120.dp)
-            .clickable(onClick = onClick),
+            .width(width)
+            .height(height)
+            .clickable(onClick = onClick)
+            .graphicsLayer(scaleX = pulse, scaleY = pulse),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
-    ){
+        ) {
         BasicText(
             text = smile,
             modifier = Modifier,
             style = TextStyle(
                 fontSize = 72.sp
             )
-            )
+        )
         BasicText(
             text = text,
             modifier = Modifier
-                .padding(top=0.dp),
+                .padding(top = 0.dp),
             style = TextStyle(
                 fontFamily = fredokaFamily,
                 color = Color.White,
@@ -548,8 +634,8 @@ fun AnimalImage(
     correctAnswer: String? = null,
     modifier: Modifier,
     smileModifier: Modifier = Modifier,
-){
-    if (image != null){
+) {
+    if (image != null) {
         Image(
             bitmap = image,
             contentDescription = stringResource(id = R.string.animalExcersiseHeader),
@@ -568,7 +654,7 @@ fun AnimalImage(
             )
             BoldText(
                 text = if (!fail) {
-                    stringResource(id = R.string.failAnswer)+correctAnswer
+                    stringResource(id = R.string.failAnswer) + correctAnswer
                 } else {
                     stringResource(id = R.string.correctAnswer)
                 },

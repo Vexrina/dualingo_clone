@@ -1,6 +1,5 @@
 package com.example.dualingo_clone.main.ui
 
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +12,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.dualingo_clone.R
 import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ExcersiseCard
 import com.example.dualingo_clone.ui.components.HeaderMainScreen

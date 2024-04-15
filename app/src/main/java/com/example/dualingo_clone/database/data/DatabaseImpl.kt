@@ -314,7 +314,7 @@ class DatabaseImpl @Inject constructor() : Database {
         }
     }
 
-    override suspend fun getRandomWords(): List<Word> {
+    override suspend fun getRandomWords(limit:Long): List<Word> {
         return supabaseClient!!
             .from("random_word")
             .select(
@@ -324,7 +324,7 @@ class DatabaseImpl @Inject constructor() : Database {
                     "ruWord",
                 )
             ) {
-                limit(4)
+                limit(limit)
             }
             .decodeList<Word>()
     }

@@ -1,4 +1,4 @@
-package com.example.dualingo_clone.word_excersise.views
+package com.example.dualingo_clone.game_excersise.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.dualingo_clone.dataclasses.Word
 import com.example.dualingo_clone.ui.components.BoldText
 import com.example.dualingo_clone.ui.components.ButtonComponent
 import com.example.dualingo_clone.ui.components.TextComponent
@@ -20,15 +21,17 @@ import com.example.dualingo_clone.ui.theme.AppTheme
 import com.example.dualingo_clone.word_excersise.models.WordExcersiseViewState
 
 @Composable
-fun WordCorrectView(
+fun GameQuestView(
     viewState: WordExcersiseViewState,
-) {
+    onAnswerChanged: (Word) -> Unit,
+){
     val quests = viewState.questValue
     val correctWord = viewState.correctWord
     val buttonModifier = Modifier
         .padding(top = 10.dp)
         .width(328.dp)
         .height(56.dp)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,10 +41,11 @@ fun WordCorrectView(
     ) {
         if (viewState.isLoading) {
             CircularProgressIndicator(
+                progress = {viewState.progress},
                 modifier = Modifier
                     .width(64.dp),
                 color = AppTheme.colors.excersise1,
-                trackColor = AppTheme.colors.excersise2
+                trackColor = AppTheme.colors.excersise2,
             )
         } else {
             BoldText(
@@ -60,13 +64,9 @@ fun WordCorrectView(
                 ButtonComponent(
                     text = if (viewState.enLang) quest.ruWord else quest.enWord,
                     modifier = buttonModifier,
-                    buttonColors = when (quest) {
-                        viewState.correctWord -> AppTheme.colors.excersise4
-                        viewState.selectedWord -> AppTheme.colors.activeLanguage
-                        else -> AppTheme.colors.userListItem
-                    }
+                    buttonColors = if (quest == viewState.selectedWord) AppTheme.colors.button else AppTheme.colors.userListItem
                 ) {
-
+                    onAnswerChanged.invoke(quest)
                 }
             }
         }

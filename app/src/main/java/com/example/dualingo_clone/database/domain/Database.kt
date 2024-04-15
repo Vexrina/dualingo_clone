@@ -26,5 +26,5 @@ interface Database {
     suspend fun getRandomQuest(user: User, questType: String): Quest
     suspend fun setQuestCompleted(completedQuest: CompletedQuest, questType: String)
     suspend fun updatePoints(user: UserInfo)
-    suspend fun getRandomWords(): List<Word>
+    suspend fun getRandomWords(limit: Long = 4): List<Word>
 }
