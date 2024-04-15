@@ -24,4 +24,8 @@
     <string name="wordExcersiseHeader">Word practice</string>
     <string name="checkButton">Check</string>
     <string name="nextButton">Next</string>
+    <string name="listeningHint">Please press button and say this word. Our service will check your pronunciation</string>
+    <string name="checkSpeechButton">Check my speech\n</string>
+    <string name="gameExcersise">Game!</string>
+    <string name="listeningButtonHint">Press button, say word, press button again to stop recording</string>
 </resources>

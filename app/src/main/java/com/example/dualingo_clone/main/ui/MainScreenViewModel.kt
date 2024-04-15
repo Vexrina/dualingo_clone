@@ -1,6 +1,7 @@
 package com.example.dualingo_clone.main.ui
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
@@ -49,12 +50,19 @@ class MainScreenViewModel @Inject constructor(private val db: DatabaseImpl):View
     }
 
     private fun getUserData(){
+        try{
         viewModelScope.launch(Dispatchers.IO) {
             val (usr, usrInf) = repo.getUserData()
+            if (usr==User()){
+                return@launch
+            }
             _userInfo.value = usrInf
             _user.value = usr
-            val byteArray = URL(userInfo.value!!.imageURL).readBytes()
+            val byteArray = URL(userInfo.value?.imageURL).readBytes()
             _image.value = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size).asImageBitmap()
+        }
+        } catch (e:Exception){
+            Log.d("MSVM", "cant get user data")
         }
     }
 

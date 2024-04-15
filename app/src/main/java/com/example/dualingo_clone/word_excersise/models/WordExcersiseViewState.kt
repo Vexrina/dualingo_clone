@@ -9,7 +9,6 @@ enum class WordExcersiseSubState {
 }
 
 sealed class ProfileAction {
-    data class OpenDashBoard(val username: String) : ProfileAction()
     object None : ProfileAction()
 }
 
@@ -25,4 +24,7 @@ data class WordExcersiseViewState(
     val correctWord: Word = Word(),
     val enLang: Boolean = true,
     val selectedWord: Word = Word(),
+
+    val robotSelectWord: Word = Word(),
+    val progress: Float = 0f,
 )

@@ -18,6 +18,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dualingo_clone.animal_excersise.ui.AnimalExcersiseScreen
 import com.example.dualingo_clone.animal_excersise.ui.AnimalExcersiseViewModel
+import com.example.dualingo_clone.audition_excersise.ui.AuditionExcersiseScreen
+import com.example.dualingo_clone.game_excersise.ui.GameExcersiseScreen
+import com.example.dualingo_clone.game_excersise.ui.GameExcersiseViewModel
 import com.example.dualingo_clone.main.ui.MainScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageScreen
 import com.example.dualingo_clone.motherLanguage.ui.MotherLanguageViewModel
@@ -93,8 +96,14 @@ fun CreateNavHost(navController: NavHostController) {
                 navController = navController
             )
         }
-        composable(route = "audition_excersise") { Greeting(name = "audition")}
-        composable(route = "game_excersise") { Greeting(name = "game")}
+        composable(route = "audition_excersise") { AuditionExcersiseScreen(navController)}
+        composable(route = "game_excersise") {
+            val gameViewModel = hiltViewModel<GameExcersiseViewModel>()
+            GameExcersiseScreen(
+                gameViewModel = gameViewModel,
+                navController = navController
+            )
+        }
     }
 }
 
