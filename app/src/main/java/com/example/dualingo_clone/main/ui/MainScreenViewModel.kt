@@ -4,8 +4,10 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dualingo_clone.R
 import com.example.dualingo_clone.database.data.DatabaseImpl
 import com.example.dualingo_clone.dataclasses.Excersise
 import com.example.dualingo_clone.dataclasses.TopUsers
@@ -58,8 +60,12 @@ class MainScreenViewModel @Inject constructor(private val db: DatabaseImpl):View
             }
             _userInfo.value = usrInf
             _user.value = usr
-            val byteArray = URL(userInfo.value?.imageURL).readBytes()
-            _image.value = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size).asImageBitmap()
+            if (userInfo.value?.imageURL?.isNotEmpty() == true){
+                val byteArray = URL(userInfo.value?.imageURL).readBytes()
+                _image.value = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size).asImageBitmap()
+            } else {
+                _image.value = null
+            }
         }
         } catch (e:Exception){
             Log.d("MSVM", "cant get user data")
