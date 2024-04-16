@@ -80,7 +80,7 @@ fun OnboardScreen(navController: NavController) {
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 32.dp)
         ) {
-            navController.navigate("greetings")
+            navController.navigate("signin")
         }
     }
 }

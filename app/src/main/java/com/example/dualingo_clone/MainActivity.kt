@@ -81,7 +81,6 @@ fun CreateNavHost(navController: NavHostController) {
                 profileViewModel = profileViewModel
             )
         }
-        composable(route = "greetings") { Greeting(name = "Android") }
         composable(route = "animal_excersise") {
             val animalViewModel = hiltViewModel<AnimalExcersiseViewModel>()
             AnimalExcersiseScreen(

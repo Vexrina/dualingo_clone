@@ -12,20 +12,12 @@ class SharedPreferencesCache(private val context: Context) : Cache {
     private val KEY_USER_EMAIL = "user_email"
     private val KEY_USER_PWORD = "user_pword"
 
-    /**
-     * Set user mother language to SharedPreferences.
-     * @param languageName will be set as MotherLanguage.
-    */
     override fun setUserMotherLanguage(languageName: String) {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putString(KEY_USER_MOTHER_LANGUAGE_ID, languageName)
         editor.apply()
     }
 
-    /**
-     * Get user mother language from SharedPreferences.
-     * @return MotherLanguage.
-     */
     override fun getUserMotherLanguage(): String? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString(KEY_USER_MOTHER_LANGUAGE_ID, null)
